@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<style>
+    @font-face{
+        font-family:spotify-circular;src:url("https://encore.scdn.co/1.2.3/CircularSpotify-UI-Latin-OS2v3-Book.woff2")format(url("woff2")),url("https://encore.scdn.co/1.2.3/CircularSpotify-UI-Latin-OS2v3-Book.woff")format(url("woff"));src:url("https://encore.scdn.co/1.2.3/CircularSpotify-UI-Latin-OS2v3-Book.woff2")format("woff2"),url("https://encore.scdn.co/1.2.3/CircularSpotify-UI-Latin-OS2v3-Book.woff")format("woff");
+    }
+    @font-face{font-family:'Noto Sans';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/notosans/v28/o-0IIpQlx3QUlC5A4PNb4Q.woff) format('woff')}
+        
+    body {
+	    background-color: black;
+	}
+	button, input {
+        background-color: #1ed760;
+        color: black;
+        font-family: "Noto Sans", sans-serif;
+	}
+    h1 {
+        color: white;
+        font-family: spotify-circular;
+    }
+	label, p {
+	    color: white;
+        font-family: "Noto Sans", sans-serif;
+	}
+	#flexbox {
+		display: flex
+	}
+	#PastGuessesP, #SearchedTracksP {
+		width: 300px
+	}
+</style>
+<head><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="shortcut icon" href="#"><title>Cleave-ardle</title></head>
+<body>
+    <h1>Cleave-ardle</h1>
+    <div id="AudioDiv">
+        <audio controls id="AudioPlayer">
+            <source src="https://p.scdn.co/mp3-preview/ec71f9c7e63197fab3cb1098f3eb82f6c18fc33c?cid=60158f27d91a4a14a99af55641d6b5af" type="audio/mpeg" id="AudioPlayerSource">
+        </audio>
+    </div>
+    <div id="flexbox">
+    <div id="GuessDiv">
+        <p id="PastGuessesP">
+            <input id="guess1" disabled/><strong id="guess1X" style="color:red" hidden> X</strong><br/>
+            <input id="guess2" disabled/><strong id="guess2X" style="color:red" hidden> X</strong><br/>
+            <input id="guess3" disabled/><strong id="guess3X" style="color:red" hidden> X</strong><br/>
+            <input id="guess4" disabled/><strong id="guess4X" style="color:red" hidden> X</strong><br/>
+            <input id="guess5" disabled/><strong id="guess5X" style="color:red" hidden> X</strong><br/>
+            <input id="guess6" disabled/><strong id="guess6X" style="color:red" hidden> Sorry :(</strong><br/>
+        </p>
+        <input id="searchInput"/><button id="searchButton">Search</button><button id="skipButton">Skip</button>
+        <p id="SearchedTracksP"></p>
+    </div>
+    </div>
+    <div id="EndGameDiv" hidden>
+        <p id="EndGameTrackDetails">Opus by Eric Prydz on Opus</p>
+        <img id="EndGameAlbumArt" src="https://i.scdn.co/image/ab67616d0000b27324492f2ba3a1d995e1faf5d8" alt="no album art :(" height="200">
+        <p id="EndGameEmojis"></p>
+        
+    </div>
+    <div id="CorrectAnswersDiv" name="Hey, quit cheating! Also, yes Jordan, there is certainly a better way to do this. Do you want Heardle or nah" hidden><input id="trackName"/><input id="trackURI" value="spotify:track:3v2oAQomhOcYCPPHafS3KV"/><input id="artistName"/><input id="artistURI" value="spotify:artist:5sm0jQ1mq0dusiLtDJ2b4R"/><input id="albumName"/><input id="albumImg"/><input id="previewURL"/><input id="backupEmojis"/></div>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script>
+        let audioplayer = document.getElementById("AudioPlayer");
+        audioplayer.volume = 0.5;
+        audioplayer.addEventListener("play", pauseAfterNSeconds, false);
+        audioplayer.NSeconds = 1;
+        let interval;
+        function pauseAfterNSeconds(event){
+            interval = setTimeout(function(){
+                audioplayer.pause();
+                audioplayer.currentTime = 0;
+            }, audioplayer.NSeconds * 1000);
+        }
+        audioplayer.addEventListener("pause", hasBeenPaused, false);
+        function hasBeenPaused(event){
+            clearInterval(interval);
+            audioplayer.currentTime = 0;
+        }
+
+        let searchbutton = document.getElementById("searchButton");
+        searchbutton.NumGuesses = 0;
+        searchbutton.addEventListener("click", searchForSongs, false);
+
+        
+
+        function searchForSongs(event){
+            let searchQuery = event.currentTarget.previousSibling.value;
+            if((searchQuery != null) && (searchQuery != "")){
+                $.ajax({
+                    url: "http://kevinjvancleave.com:8888/search_track",
+                    data: {
+                        q: searchQuery,
+                        limit: 10
+                    }
+                }).done(function (data){
+                    var trackList_html = "";
+                    for (let index = 0; index < data.data.length; index++) {
+                        let artistList_html="";
+                        for (let artistIndex=0; artistIndex < data.data[index].artists.length; artistIndex++){
+                            if(artistIndex>0){
+                                artistList_html+=","
+                            }
+                            artistList_html+=data.data[index].artists[artistIndex].uri;
+                        }
+                    trackList_html +=
+                        '<button id="' +
+                        data.data[index].uri +
+                        '" class="guessButton" name="' +
+                        artistList_html +
+                        '">Guess</button><input disabled value="' +
+                        data.data[index].name +
+                        ' by ' +
+                        data.data[index].artists[0].name +
+                        '"/><br>';
+                        
+                    }
+                    document.getElementById("SearchedTracksP").innerHTML = trackList_html;
+                    const guessButtons = document.getElementsByClassName("guessButton");
+                    for (let i=0; i < guessButtons.length; i++){
+                        guessButtons[i].addEventListener("click", submitGuess, false);
+                    }
+                });
+            }
+        }
+
+        let skipButton = document.getElementById("skipButton");
+        skipButton.addEventListener("click", skipGuess, false);
+
+        function skipGuess(event){
+            submitGuess();
+        }
+
+        function submitGuess(event){
+            let guessTrackID,guessText;
+            const redSquare = "&#128997";
+            const yellowSquare = "&#129000";
+            const greenSquare = "&#129001";
+            const blackSquare = "&#11035";
+            const whiteSquare = "&#11036";
+            const EndGameEmojis = document.getElementById("EndGameEmojis");
+            const backupEmojis = document.getElementById("backupEmojis");
+            if(event == null){
+                guessTrackID = "";
+                guessText = "(Skipped)"
+            }
+            else{
+                guessTrackID = event.currentTarget.id;
+                guessText = event.currentTarget.nextSibling.value;
+            }
+            searchbutton.NumGuesses += 1;
+            let guessShowerID="guess"+searchbutton.NumGuesses;
+            let guessShowerXID = guessShowerID + "X";
+            let guesselem = document.getElementById(guessShowerXID);
+            guesselem.hidden = false;
+            document.getElementById(guessShowerID).value=guessText;
+            if (guessTrackID===document.getElementById("trackURI").value){
+                //correct guess
+                guesselem.style = "color:green";
+                guesselem.innerHTML = "You won!";
+                EndGameEmojis.innerHTML += greenSquare;
+                backupEmojis.value += greenSquare;
+                endGame();
+            }
+            else{
+                //incorrect guess
+                if(event == null){
+                    //skipped
+                    EndGameEmojis.innerHTML += blackSquare;
+                    backupEmojis.value += blackSquare;
+                }
+                else{
+                    let artistList = event.currentTarget.name;
+                    const artistListSplit = artistList.split(",");
+                    const artistURISplit = document.getElementById("artistURI").value.split(",");
+                    let thereIsAMatch = false;
+                    for (let i=0; i<artistListSplit.length; i++){
+                        for (let j=0; j<artistURISplit.length; j++){
+                            if(artistListSplit[i].includes(artistURISplit[j])){
+                                thereIsAMatch = true;
+                            }
+                        }
+                    }
+                    if(thereIsAMatch){
+                        //got a correct artist
+                        guesselem.style = "color:yellow";
+                        //default is red X so no need to do anything more than show it
+                        EndGameEmojis.innerHTML += yellowSquare;
+                        backupEmojis.value += yellowSquare;
+                    }
+                    else{
+                        EndGameEmojis.innerHTML += redSquare;
+                        backupEmojis.value += redSquare;
+                    }
+                }
+                switch(audioplayer.NSeconds){
+                    case 1:
+                        audioplayer.NSeconds = 3;
+                        break;
+                    case 3:
+                        audioplayer.NSeconds = 5;
+                        break;
+                    case 5:
+                        audioplayer.NSeconds = 10;
+                        break;
+                    case 10:
+                        audioplayer.NSeconds = 20;
+                        break;
+                    case 20:
+                        audioplayer.NSeconds = 30;
+                        break;
+                    case 30:
+                        audioplayer.NSeconds = 31;
+                        break;
+                    default:
+                        audioplayer.NSeconds = 30;
+                }
+                if(searchbutton.NumGuesses===6){
+                    //final loss
+                    endGame();
+                    
+                }
+                
+            }
+            document.getElementById("SearchedTracksP").innerHTML="";
+        }
+
+        function getTrackAndArtistURISAndPreviewURL(event){
+            
+            var data = { 'requestType' : "prettyPlease"};
+            fetch("trackartist_fetcher.php", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {'content-type': 'application/json'}
+            })
+            .then(response => response.json())
+            .then(data => receiveTrackData(data))
+            .catch(err => console.log(err))
+        }
+
+        function receiveTrackData(data){
+            document.getElementById("trackName").value=data.track_name;
+            document.getElementById("trackURI").value=data.track_uri;
+            document.getElementById("artistName").value=data.artist_name;
+            document.getElementById("artistURI").value=data.artist_uri;
+            document.getElementById("albumName").value=data.album_name;
+            document.getElementById("albumImg").value=data.album_img;
+            document.getElementById("previewURL").value=data.preview_url;
+
+            document.getElementById("EndGameTrackDetails").innerHTML = "" + data.track_name + " by " + data.artist_name + " on " + data.album_name;
+            document.getElementById("EndGameAlbumArt").src=data.album_img;
+            document.getElementById("AudioPlayerSource").src=data.preview_url;
+            document.getElementById("AudioPlayer").load();
+        }
+
+        function endGame(event){
+            //show song and artist name, album art, play preview from beginning, etc.
+            searchbutton.removeEventListener("click", searchForSongs);
+            skipButton.removeEventListener("click", skipGuess);
+            document.getElementById("EndGameDiv").hidden = false;
+            audioplayer.NSeconds = 31;
+            audioplayer.currentTime = 0;
+            const EndGameEmojis = document.getElementById("EndGameEmojis");
+            const backupEmojis = document.getElementById("backupEmojis");
+            const whiteSquare = "&#11036";
+            if(searchbutton.NumGuesses != 6){
+                for(let i=searchbutton.NumGuesses; i<6; i++){
+                    EndGameEmojis.innerHTML += whiteSquare;
+                    backupEmojis.value += whiteSquare;
+                }
+            }
+        }
+        
+        getTrackAndArtistURISAndPreviewURL();
+
+    </script>
+</body>
