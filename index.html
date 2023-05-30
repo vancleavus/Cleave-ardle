@@ -54,10 +54,11 @@
     <div id="EndGameDiv" hidden>
         <p id="EndGameTrackDetails">Opus by Eric Prydz on Opus</p>
         <img id="EndGameAlbumArt" src="https://i.scdn.co/image/ab67616d0000b27324492f2ba3a1d995e1faf5d8" alt="no album art :(" height="200">
+        <p id="EndGameDayNumber"></p>
         <p id="EndGameEmojis"></p>
         
     </div>
-    <div id="CorrectAnswersDiv" name="Hey, quit cheating! Also, yes Jordan, there is certainly a better way to do this. Do you want Heardle or nah" hidden><input id="trackName"/><input id="trackURI" value="spotify:track:3v2oAQomhOcYCPPHafS3KV"/><input id="artistName"/><input id="artistURI" value="spotify:artist:5sm0jQ1mq0dusiLtDJ2b4R"/><input id="albumName"/><input id="albumImg"/><input id="previewURL"/><input id="backupEmojis"/></div>
+    <div id="CorrectAnswersDiv" name="Hey, quit cheating! Also, yes Jordan, there is certainly a better way to do this. Do you want Heardle or nah" hidden><input id="trackName"/><input id="trackURI" value="spotify:track:3v2oAQomhOcYCPPHafS3KV"/><input id="artistName"/><input id="artistURI" value="spotify:artist:5sm0jQ1mq0dusiLtDJ2b4R"/><input id="albumName"/><input id="albumImg"/><input id="previewURL"/><input id="backupEmojis"/><input id="dayNumber"/></div>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
         let audioplayer = document.getElementById("AudioPlayer");
@@ -248,9 +249,11 @@
             document.getElementById("albumName").value=data.album_name;
             document.getElementById("albumImg").value=data.album_img;
             document.getElementById("previewURL").value=data.preview_url;
+            document.getElementById("dayNumber").value=data.day_number;
 
             document.getElementById("EndGameTrackDetails").innerHTML = "" + data.track_name + " by " + data.artist_name + " on " + data.album_name;
             document.getElementById("EndGameAlbumArt").src=data.album_img;
+            document.getElementById("EndGameEmojis").innerHTML = "Cleave-ardle #" + data.day_number + "<br>";
             document.getElementById("AudioPlayerSource").src=data.preview_url;
             document.getElementById("AudioPlayer").load();
         }

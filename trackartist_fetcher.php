@@ -14,6 +14,7 @@ if($requestInputObject_json['requestType'] == 'prettyPlease'){
 	$albumNameStoredString = file_get_contents("/usr/local/Cleaveardle/albumname.txt");
 	$albumImgStoredString = file_get_contents("/usr/local/Cleaveardle/albumimg.txt");
 	$previewURLStoredString = file_get_contents("/usr/local/Cleaveardle/previewurl.txt");
+	$dayNumberStoredString = file_get_contents("/usr/local/Cleaveardle/number.txt");
 	echo json_encode(array(
 		"success" => true,
 		"time" => date("h:i:sa"),
@@ -23,7 +24,8 @@ if($requestInputObject_json['requestType'] == 'prettyPlease'){
 		"artist_uri" => $artistURIStoredString,
 		"album_name" => $albumNameStoredString,
 		"album_img" => $albumImgStoredString,
-		"preview_url" => $previewURLStoredString
+		"preview_url" => $previewURLStoredString,
+		"day_number" => $dayNumberStoredString
 	));
 	exit;
 }
