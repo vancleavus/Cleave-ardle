@@ -194,6 +194,9 @@
                 }
                 switch(audioplayer.NSeconds){
                     case 1:
+                        audioplayer.NSeconds = 2;
+                        break;
+                    case 2:
                         audioplayer.NSeconds = 3;
                         break;
                     case 3:
@@ -203,16 +206,13 @@
                         audioplayer.NSeconds = 10;
                         break;
                     case 10:
-                        audioplayer.NSeconds = 20;
+                        audioplayer.NSeconds = 15;
                         break;
-                    case 20:
-                        audioplayer.NSeconds = 30;
-                        break;
-                    case 30:
+                    case 15:
                         audioplayer.NSeconds = 31;
                         break;
                     default:
-                        audioplayer.NSeconds = 30;
+                        audioplayer.NSeconds = 1;
                 }
                 if(searchbutton.NumGuesses===6){
                     //final loss
