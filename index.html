@@ -26,7 +26,7 @@
 		display: flex
 	}
 	#PastGuessesP, #SearchedTracksP {
-		width: 300px
+		width: 400px
 	}
 </style>
 <head><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="shortcut icon" href="#"><title>Cleave-ardle</title></head>
@@ -40,14 +40,14 @@
     <div id="flexbox">
     <div id="GuessDiv">
         <p id="PastGuessesP">
-	<label for="guess1">(0:01)</label><input id="guess1" disabled/><strong id="guess1X" style="color:red" hidden> X</strong><br/>
-	<label for="guess2">(0:02)</label><input id="guess2" disabled/><strong id="guess2X" style="color:red" hidden> X</strong><br/>
-	<label for="guess3">(0:04)</label><input id="guess3" disabled/><strong id="guess3X" style="color:red" hidden> X</strong><br/>
-	<label for="guess4">(0:07)</label><input id="guess4" disabled/><strong id="guess4X" style="color:red" hidden> X</strong><br/>
-	<label for "guess5">(0:11)</label><input id="guess5" disabled/><strong id="guess5X" style="color:red" hidden> X</strong><br/>
-	<label for="guess6">(0:16)</label><input id="guess6" disabled/><strong id="guess6X" style="color:red" hidden> Sorry :(</strong><br/>
+	<label for="guess1">(0:01)</label><input id="guess1" size="33" disabled/><strong id="guess1X" style="color:red" hidden> X</strong><br/>
+	<label for="guess2">(0:02)</label><input id="guess2" size="33" disabled/><strong id="guess2X" style="color:red" hidden> X</strong><br/>
+	<label for="guess3">(0:04)</label><input id="guess3" size="33" disabled/><strong id="guess3X" style="color:red" hidden> X</strong><br/>
+	<label for="guess4">(0:07)</label><input id="guess4" size="33" disabled/><strong id="guess4X" style="color:red" hidden> X</strong><br/>
+	<label for "guess5">(0:11)</label><input id="guess5" size="33" disabled/><strong id="guess5X" style="color:red" hidden> X</strong><br/>
+	<label for="guess6">(0:16)</label><input id="guess6" size="33" disabled/><strong id="guess6X" style="color:red" hidden> Sorry :(</strong><br/>
         </p>
-        <input id="searchInput"/><button id="searchButton">Search</button><button id="skipButton">Skip</button>
+        <input id="searchInput" size="25"/><button id="searchButton">Search</button><button id="skipButton">Skip</button>
         <p id="SearchedTracksP"></p>
     </div>
     </div>
@@ -110,7 +110,7 @@
                         data.data[index].uri +
                         '" class="guessButton" name="' +
                         artistList_html +
-                        '">Guess</button><input disabled value="' +
+                        '">Guess</button><input size="32" disabled value="' +
                         data.data[index].name +
                         ' by ' +
                         artistName_html +
