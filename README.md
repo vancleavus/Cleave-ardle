@@ -2,7 +2,7 @@
 
 Spotify took down my favorite daily song-guessing game, [Heardle](https://www.spotify.com/heardle/). I decided to re-make it as best as I could. I promise this was my best.
 
-The idea of Heardle was that you'd get the first second of the song, then you'd try to guess the song. If you weren't successful, you'd get the first 2 seconds, then you could guess again. Then 3 seconds, then 5, then 10, then finally 15. If you had the correct artist, you would get a yellow X instead of a red one to know you're on the right path. You could also just not guess and instead skip to get more of the song.
+The idea of Heardle was that you'd get the first second of the song, then you'd try to guess the song. If you weren't successful, you'd get the first 2 seconds, then you could guess again. Then 4 seconds, then 7, then 11, then finally 16. If you had the correct artist, you would get a yellow X instead of a red one to know you're on the right path. You could also just not guess and instead skip to get more of the song.
 
 Believe it or not, don't love doing READMEs for things that probably won't get looked at. 'Pologies. If you're actually interested in more details, email me at [kevinjvancleave@gmail.com](mailto:kevinjvancleave@gmail.com).
 
