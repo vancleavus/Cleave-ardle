@@ -2,7 +2,7 @@ import json
 import time
 import random
 track_artist_pairs = []
-with open('/home/kevcleave/trackuris.json', 'r') as openJSONFile:
+with open('/usr/local/Cleaveardle/trackuris.json', 'r') as openJSONFile:
     track_artist_pairs = json.load(openJSONFile)
 n = random.randrange(int(len(track_artist_pairs)/7))
 with open("/usr/local/Cleaveardle/trackname.txt", 'w') as openTextFile:
