@@ -40,12 +40,12 @@
     <div id="flexbox">
     <div id="GuessDiv">
         <p id="PastGuessesP">
-            <input id="guess1" disabled/><strong id="guess1X" style="color:red" hidden> X</strong><br/>
-            <input id="guess2" disabled/><strong id="guess2X" style="color:red" hidden> X</strong><br/>
-            <input id="guess3" disabled/><strong id="guess3X" style="color:red" hidden> X</strong><br/>
-            <input id="guess4" disabled/><strong id="guess4X" style="color:red" hidden> X</strong><br/>
-            <input id="guess5" disabled/><strong id="guess5X" style="color:red" hidden> X</strong><br/>
-            <input id="guess6" disabled/><strong id="guess6X" style="color:red" hidden> Sorry :(</strong><br/>
+	<label for="guess1">(0:01)</label><input id="guess1" disabled/><strong id="guess1X" style="color:red" hidden> X</strong><br/>
+	<label for="guess2">(0:02)</label><input id="guess2" disabled/><strong id="guess2X" style="color:red" hidden> X</strong><br/>
+	<label for="guess3">(0:04)</label><input id="guess3" disabled/><strong id="guess3X" style="color:red" hidden> X</strong><br/>
+	<label for="guess4">(0:07)</label><input id="guess4" disabled/><strong id="guess4X" style="color:red" hidden> X</strong><br/>
+	<label for "guess5">(0:11)</label><input id="guess5" disabled/><strong id="guess5X" style="color:red" hidden> X</strong><br/>
+	<label for="guess6">(0:16)</label><input id="guess6" disabled/><strong id="guess6X" style="color:red" hidden> Sorry :(</strong><br/>
         </p>
         <input id="searchInput"/><button id="searchButton">Search</button><button id="skipButton">Skip</button>
         <p id="SearchedTracksP"></p>
@@ -96,11 +96,14 @@
                     var trackList_html = "";
                     for (let index = 0; index < data.data.length; index++) {
                         let artistList_html="";
+			let artistName_html="";
                         for (let artistIndex=0; artistIndex < data.data[index].artists.length; artistIndex++){
                             if(artistIndex>0){
-                                artistList_html+=","
+                                artistList_html+=",";
+				artistName_html+=",";
                             }
                             artistList_html+=data.data[index].artists[artistIndex].uri;
+                            artistName_html+=data.data[index].artists[artistIndex].name;
                         }
                     trackList_html +=
                         '<button id="' +
@@ -110,7 +113,7 @@
                         '">Guess</button><input disabled value="' +
                         data.data[index].name +
                         ' by ' +
-                        data.data[index].artists[0].name +
+                        artistName_html +
                         '"/><br>';
                         
                     }
